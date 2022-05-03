@@ -10,7 +10,7 @@ export default function Home() {
   const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
   const [downloadLink, setDownloadLink] = useState();
-  // const [videoDownloadLink, setVideoDownloadLink] = useState();
+  const [quality, setQuality] = useState("360");
 
   const options = {
     method: "POST",
@@ -45,7 +45,7 @@ export default function Home() {
         <title>Youtube Video Downloader</title>
       </Head>
       <main className="bg-[#b8d4e1] flex items-center justify-center itmes-center h-screen w-screen">
-        <div className="bg-white shadow-md rounded-md md:w-[600px] md:min-h-[245px] p-3 m-1 transition">
+        <div className="bg-white shadow-md rounded-md sm:w-[600px] sm:min-h-[235px] p-3 m-1 transition">
           <h1 className="prose prose-2xl font-bold text-center">
             Youtube Video Downloader
           </h1>
@@ -68,26 +68,30 @@ export default function Home() {
             )}
 
             <div className="flex flex-col mx-3 mt-3">
-              {/* {!response?.body && (
-                <label className="text-base text-gray-500 mb-1 ml-1">
-                  Select a Video Format
-                </label>
-              )} */}
-
-              {/* {!response?.body && (
+              <label className="text-base text-gray-500 mb-1 ml-1">
+                {response?.body && "Select Video Quality"}
+              </label>
+              {response?.body && (
                 <select
                   className="rounded-lg border-gray-300 border-2 transition focus:ring-0 focus:border-blue-400"
-                  onChange={
-                    !response?.body
-                      ? (e) => setFormat(e)
-                      : (e) => setQuality(e.target.value)
-                  }
+                  onChange={(e) => setQuality(e.target.value)}
                   disabled={loading}
                 >
-                  <option value="youtube-vid">Video (.mp4)</option>
-                  <option value="youtube-audio">Audio (.mp3)</option>
+                  {downloadLink.map((element) => {
+                    return (
+                      <>
+                        {(element.quality >= "144") &
+                          (element.no_audio == false) &
+                          (element.ext == "mp4") && (
+                          <option value={element.quality} key={element.url}>
+                            {element.quality}p
+                          </option>
+                        )}
+                      </>
+                    );
+                  })}
                 </select>
-              )} */}
+              )}
             </div>
             <div className="flex flex-col mx-3 mt-3">
               {response?.body?.thumb && (
@@ -120,13 +124,15 @@ export default function Home() {
                   href={
                     downloadLink.find(
                       (element) =>
-                        (element.quality == "720") & !element.no_audio
+                        (element.quality == quality) &
+                        !element.no_audio &
+                        (element.ext == "mp4")
                     ).url
                   }
                   onClick={() => toast.success("Starting the download!")}
                   className="bg-blue-600 font-semibold text-xl pb-1 flex items-center justify-center h-10 text-white rounded"
                 >
-                  Download (720p)
+                  Download ({quality}p)
                 </a>
               )}
             </div>
