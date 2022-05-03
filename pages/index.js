@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ export default function Home() {
   const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
   const [downloadLink, setDownloadLink] = useState();
+  // const [videoDownloadLink, setVideoDownloadLink] = useState();
 
   const options = {
     method: "POST",
@@ -28,6 +29,7 @@ export default function Home() {
       const res = await axios.request(options);
       setResponse(res.data.data);
       setDownloadLink(res.data.data.body.url);
+      console.log(res);
       setLoading(false);
       toast.success("Download is ready!");
     } catch (err) {
@@ -44,7 +46,7 @@ export default function Home() {
       </Head>
       <main className="bg-[#b8d4e1] flex items-center justify-center itmes-center h-screen w-screen">
         <div className="bg-white shadow-md rounded-md md:w-[600px] md:min-h-[245px] p-3 m-1 transition">
-          <h1 className="prose md:prose-2xl font-bold text-center">
+          <h1 className="prose prose-2xl font-bold text-center">
             Youtube Video Downloader
           </h1>
 
@@ -116,7 +118,10 @@ export default function Home() {
                 <a
                   download
                   href={
-                    downloadLink.find((element) => element.quality == "720").url
+                    downloadLink.find(
+                      (element) =>
+                        (element.quality == "720") & !element.no_audio
+                    ).url
                   }
                   onClick={() => toast.success("Starting the download!")}
                   className="bg-blue-600 font-semibold text-xl pb-1 flex items-center justify-center h-10 text-white rounded"
