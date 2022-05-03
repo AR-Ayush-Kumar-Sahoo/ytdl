@@ -9,7 +9,7 @@ export default function Home() {
   const [format, setFormat] = useState("youtube-vid");
   const [response, setResponse] = useState();
   const [loading, setLoading] = useState(false);
-  const [downloadLink, setDownloadLink] = useState();
+  const [downloadLink, setDownloadLink] = useState([]);
   const [quality, setQuality] = useState("360");
 
   const options = {
@@ -29,6 +29,7 @@ export default function Home() {
       const res = await axios.request(options);
       setResponse(res.data.data);
       setDownloadLink(res.data.data.body.url);
+
       console.log(res);
       setLoading(false);
       toast.success("Download is ready!");
@@ -45,7 +46,7 @@ export default function Home() {
         <title>Youtube Video Downloader</title>
       </Head>
       <main className="bg-[#b8d4e1] flex items-center justify-center itmes-center h-screen w-screen">
-        <div className="bg-white shadow-md rounded-md sm:w-[600px] sm:min-h-[235px] p-3 m-1 transition">
+        <div className="bg-white shadow-md rounded-md sm:w-[600px] sm:min-h-[225px] p-3 m-1 transition">
           <h1 className="prose prose-2xl font-bold text-center">
             Youtube Video Downloader
           </h1>
@@ -110,7 +111,7 @@ export default function Home() {
               )}
             </div>
 
-            <div className="flex flex-col mx-3 mt-3">
+            <div className="flex flex-col mx-3">
               {!response?.body ? (
                 <button
                   type="submit"
@@ -129,7 +130,9 @@ export default function Home() {
                         (element.ext == "mp4")
                     ).url
                   }
-                  onClick={() => toast.success("Starting the download!")}
+                  onClick={() => {
+                    toast.success("Starting the download!");
+                  }}
                   className="bg-blue-600 font-semibold text-xl pb-1 flex items-center justify-center h-10 text-white rounded"
                 >
                   Download ({quality}p)
