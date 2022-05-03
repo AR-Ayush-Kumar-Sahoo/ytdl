@@ -40,12 +40,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Online Video Downloader</title>
+        <title>Youtube Video Downloader</title>
       </Head>
       <main className="bg-[#b8d4e1] flex items-center justify-center itmes-center h-screen w-screen">
         <div className="bg-white shadow-md rounded-md md:w-[600px] md:min-h-[245px] p-3 m-1 transition">
-          <h1 className="prose prose-2xl font-bold text-center">
-            Online Video Downloader
+          <h1 className="prose md:prose-2xl font-bold text-center">
+            Youtube Video Downloader
           </h1>
 
           <form onSubmit={(e) => startDownloading(e)}>
